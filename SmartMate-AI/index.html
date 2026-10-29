@@ -1,0 +1,739 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartMate AI | Smart Assistant</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg: #08111f;
+  --panel: #101e31;
+  --border: #263954;
+  --text: #eef4ff;
+  --muted: #9aabc3;
+  --blue: #6595ff;
+  --cyan: #70e1e8;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 250px;
+  background: #0a1525;
+  border-right: 1px solid var(--border);
+  padding: 25px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #08111f;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.brand h2 {
+  font-size: 18px;
+}
+
+.brand h2 span {
+  color: var(--cyan);
+}
+
+.brand p {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.new-chat {
+  padding: 13px;
+  border: none;
+  border-radius: 11px;
+  background: linear-gradient(100deg, #4778ef, #5d9bff);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.section-title {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.history button {
+  padding: 11px;
+  background: transparent;
+  color: #c5d4e9;
+  border: none;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history button:hover {
+  background: #172a43;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 2;
+}
+
+/* MAIN AREA */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 75px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+
+.topbar h3 {
+  font-size: 15px;
+}
+
+.topbar p {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 5px;
+}
+
+.badge {
+  padding: 9px 13px;
+  border: 1px solid var(--border);
+  background: #14243b;
+  color: #d6e5ff;
+  border-radius: 30px;
+  font-size: 11px;
+}
+
+/* WELCOME */
+
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 35px 20px 190px;
+}
+
+.content {
+  max-width: 790px;
+  margin: auto;
+}
+
+.welcome {
+  text-align: center;
+  padding: 35px 0 20px;
+}
+
+.welcome-icon {
+  width: 65px;
+  height: 65px;
+  margin: auto auto 20px;
+  border-radius: 22px;
+  background: #172b47;
+  border: 1px solid #354f75;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  color: var(--cyan);
+}
+
+.eyebrow {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.welcome h1 {
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.2;
+  margin: 17px 0;
+}
+
+.gradient {
+  background: linear-gradient(90deg, #80a9ff, #78e6e5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.welcome p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 500px;
+  margin: auto;
+  font-size: 14px;
+}
+
+/* SUGGESTIONS */
+
+.suggestions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+  margin: 25px 0;
+}
+
+.suggestion {
+  padding: 18px;
+  background: linear-gradient(140deg, #12223a, #0c1829);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.suggestion:hover {
+  border-color: var(--blue);
+  transform: translateY(-3px);
+}
+
+.suggestion .icon {
+  font-size: 23px;
+  margin-bottom: 12px;
+}
+
+.suggestion h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.suggestion p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* CHAT MESSAGES */
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.message {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.message.user {
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #172b47;
+  border: 1px solid var(--border);
+  font-size: 12px;
+}
+
+.message.assistant .avatar {
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #08111f;
+  font-weight: bold;
+}
+
+.message-body {
+  max-width: 85%;
+  min-width: 0;
+}
+
+.message-name {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.user .message-name {
+  text-align: right;
+}
+
+.bubble {
+  padding: 14px 16px;
+  background: #102039;
+  border: 1px solid #263954;
+  border-radius: 15px;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.user .bubble {
+  background: #234b8b;
+  border-color: #3868ad;
+}
+
+/* INPUT */
+
+.composer-wrap {
+  position: fixed;
+  bottom: 0;
+  left: 250px;
+  right: 0;
+  padding: 20px;
+  background: linear-gradient(0deg, #08111f 75%, transparent);
+}
+
+.composer-inner {
+  max-width: 790px;
+  margin: auto;
+}
+
+.composer {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  padding: 12px;
+  background: #101e31;
+  border: 1px solid #344966;
+  border-radius: 17px;
+}
+
+.composer:focus-within {
+  border-color: var(--blue);
+}
+
+.composer textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 35px;
+  max-height: 140px;
+  resize: none;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: white;
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 4px;
+}
+
+.composer textarea::placeholder {
+  color: #8093af;
+}
+
+.send {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  color: #08111f;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.send:hover {
+  opacity: 0.85;
+}
+
+.note {
+  text-align: center;
+  font-size: 10px;
+  color: #71829c;
+  margin-top: 11px;
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+
+  .topbar {
+    padding: 0 15px;
+  }
+
+  .composer-wrap {
+    left: 0;
+    padding: 12px;
+  }
+
+  .chat-area {
+    padding: 20px 14px 180px;
+  }
+
+  .welcome {
+    padding-top: 25px;
+  }
+
+  .suggestions {
+    gap: 9px;
+  }
+
+  .suggestion {
+    padding: 13px;
+  }
+
+  .suggestion p {
+    font-size: 11px;
+  }
+
+  .badge {
+    font-size: 9px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 390px) {
+  .suggestions {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">✦</div>
+    <div>
+      <h2>SmartMate <span>AI</span></h2>
+      <p>Your ideas, made smarter</p>
+    </div>
+  </div>
+
+  <button class="new-chat" id="newChat">
+    ＋ New conversation
+  </button>
+
+  <div class="section-title">RECENT CHATS</div>
+  <div class="history" id="history"></div>
+
+  <div class="sidebar-footer">
+    <div>● Interface ready</div>
+    <div>SmartMate AI</div>
+    <div>Helpful ideas start here.</div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <header class="topbar">
+    <div>
+      <h3>AI Assistant</h3>
+      <p>Ask anything. Build something great.</p>
+    </div>
+    <div class="badge">✦ SmartMate · Demo mode</div>
+  </header>
+
+  <section class="chat-area" id="chatArea">
+    <div class="content">
+
+      <div class="welcome" id="welcome">
+        <div class="welcome-icon">✦</div>
+        <div class="eyebrow">YOUR PERSONAL AI ASSISTANT</div>
+
+        <h1>
+          What can I help you<br>
+          <span class="gradient">create today?</span>
+        </h1>
+
+        <p>
+          From brainstorming fresh ideas to polishing your writing,
+          SmartMate is your space to think clearly and get things done.
+        </p>
+      </div>
+
+      <div class="suggestions" id="suggestions">
+
+        <button class="suggestion"
+          data-prompt="Help me brainstorm a creative business idea.">
+          <div class="icon">💡</div>
+          <h4>Brainstorm ideas</h4>
+          <p>Explore fresh ideas for your next project.</p>
+        </button>
+
+        <button class="suggestion"
+          data-prompt="Help me write a professional email.">
+          <div class="icon">✍️</div>
+          <h4>Write something</h4>
+          <p>Draft an email, caption or short article.</p>
+        </button>
+
+        <button class="suggestion"
+          data-prompt="Teach me HTML, CSS and JavaScript as a beginner.">
+          <div class="icon">💻</div>
+          <h4>Learn to code</h4>
+          <p>Understand coding one step at a time.</p>
+        </button>
+
+        <button class="suggestion"
+          data-prompt="Make a practical study plan for one week.">
+          <div class="icon">📚</div>
+          <h4>Make a study plan</h4>
+          <p>Turn your goals into manageable steps.</p>
+        </button>
+
+      </div>
+
+      <div class="messages" id="messages" aria-live="polite"></div>
+
+    </div>
+  </section>
+
+  <div class="composer-wrap">
+    <div class="composer-inner">
+
+      <form class="composer" id="chatForm">
+        <textarea
+          id="prompt"
+          rows="1"
+          placeholder="Message SmartMate AI..."
+          aria-label="Message SmartMate AI"></textarea>
+
+        <button class="send" type="submit" id="sendBtn"
+          aria-label="Send message">➤</button>
+      </form>
+
+      <div class="note">
+        Demo mode uses sample replies. Connect a secure AI backend for live AI answers.
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<script>
+const promptBox = document.getElementById("prompt");
+const messagesEl = document.getElementById("messages");
+const welcome = document.getElementById("welcome");
+const suggestions = document.getElementById("suggestions");
+const historyEl = document.getElementById("history");
+
+let chats = [];
+let activeChat = null;
+
+function renderHistory() {
+  historyEl.innerHTML = "";
+
+  if (chats.length === 0) {
+    historyEl.textContent = "Your chats will appear here.";
+    return;
+  }
+
+  chats.forEach(chat => {
+    const button = document.createElement("button");
+    button.textContent = "◦ " + chat.title;
+    button.title = chat.title;
+
+    button.onclick = () => openChat(chat.id);
+    historyEl.appendChild(button);
+  });
+}
+
+function drawMessage(role, text) {
+  const row = document.createElement("div");
+  row.className = "message " + role;
+
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = role === "user" ? "You" : "✦";
+
+  const body = document.createElement("div");
+  body.className = "message-body";
+
+  const name = document.createElement("div");
+  name.className = "message-name";
+  name.textContent = role === "user" ? "You" : "SmartMate AI";
+
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+
+  body.append(name, bubble);
+  row.append(avatar, body);
+  messagesEl.appendChild(row);
+
+  document.getElementById("chatArea").scrollTop =
+    document.getElementById("chatArea").scrollHeight;
+}
+
+function openChat(id) {
+  activeChat = chats.find(chat => chat.id === id);
+  messagesEl.innerHTML = "";
+
+  activeChat.messages.forEach(message => {
+    drawMessage(message.role, message.text);
+  });
+
+  welcome.style.display = activeChat.messages.length ? "none" : "block";
+  suggestions.style.display = activeChat.messages.length ? "none" : "grid";
+}
+
+function newChat() {
+  activeChat = null;
+  messagesEl.innerHTML = "";
+  welcome.style.display = "block";
+  suggestions.style.display = "grid";
+  promptBox.focus();
+}
+
+function getDemoReply(text) {
+  const q = text.toLowerCase();
+
+  if (/hello|hi\b|hey|salam|assalam/.test(q)) {
+    return "Hello! 👋 Welcome to SmartMate AI.\n\nI can help you brainstorm, write, learn or plan a project. What would you like to work on?";
+  }
+
+  if (/html|css|javascript|code|coding|website/.test(q)) {
+    return "Let's build it step by step! 💻\n\n1. HTML creates the page structure.\n2. CSS styles the website.\n3. JavaScript adds interactions.\n4. Test your website in a browser.\n\nTell me what you want to build, and I can help you plan the code.\n\nThis is a sample reply, not a live AI response.";
+  }
+
+  if (/email|write|caption|article|draft/.test(q)) {
+    return "Absolutely! ✍️\n\nTell me who the writing is for, its purpose, and the tone you prefer: professional, friendly or persuasive.\n\nThis is a demo response. A live AI connection is needed for generated answers.";
+  }
+
+  if (/study|plan|schedule|learn/.test(q)) {
+    return "Here is a simple study plan 📚\n\n• Choose one clear goal.\n• Break it into small tasks.\n• Study in focused 25-minute sessions.\n• Review your progress each day.\n• Adjust your plan when needed.\n\nShare your subject and deadline for a more useful plan.\n\n(Demo response.)";
+  }
+
+  if (/business|idea|startup|project/.test(q)) {
+    return "Let's explore your idea! 💡\n\n1. Identify a problem people have.\n2. Decide who needs a solution.\n3. Build a small prototype.\n4. Ask users for feedback.\n5. Improve the idea based on what you learn.\n\n(Demo response.)";
+  }
+
+  return "Thanks for your message! ✨\n\nSmartMate AI is currently running in demo mode. These are sample responses, not live AI-generated answers.\n\nThe next step is to connect a secure backend to an AI API. Never put a secret API key directly in this HTML file or publish it on GitHub.";
+}
+
+function sendMessage(text) {
+  text = text.trim();
+  if (!text) return;
+
+  if (!activeChat) {
+    activeChat = {
+      id: Date.now(),
+      title: text.slice(0, 28),
+      messages: []
+    };
+    chats.unshift(activeChat);
+  }
+
+  if (activeChat.messages.length === 0) {
+    activeChat.title = text.slice(0, 28);
+  }
+
+  activeChat.messages.push({ role: "user", text });
+  drawMessage("user", text);
+
+  welcome.style.display = "none";
+  suggestions.style.display = "none";
+
+  promptBox.value = "";
+  promptBox.style.height = "auto";
+
+  renderHistory();
+
+  document.getElementById("sendBtn").disabled = true;
+
+  setTimeout(() => {
+    const reply = getDemoReply(text);
+
+    activeChat.messages.push({
+      role: "assistant",
+      text: reply
+    });
+
+    drawMessage("assistant", reply);
+    document.getElementById("sendBtn").disabled = false;
+    promptBox.focus();
+  }, 400);
+}
+
+document.getElementById("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+  sendMessage(promptBox.value);
+});
+
+promptBox.addEventListener("input", () => {
+  promptBox.style.height = "auto";
+  promptBox.style.height =
+    Math.min(promptBox.scrollHeight, 140) + "px";
+});
+
+promptBox.addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    document.getElementById("chatForm").requestSubmit();
+  }
+});
+
+document.getElementById("newChat").addEventListener("click", newChat);
+
+document.querySelectorAll(".suggestion").forEach(button => {
+  button.addEventListener("click", () => {
+    sendMessage(button.dataset.prompt);
+  });
+});
+
+renderHistory();
+</script>
+
+</body>
+</html>
